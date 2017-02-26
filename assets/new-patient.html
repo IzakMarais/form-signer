@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>New patient form</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet"> </head>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="jSignature/jSignature.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12" style="height:25px;"></div>            
+            <div class="col-sm-offset-2 col-sm-6"><img class="img-responsive" src="letterhead compact.png"></div>
+            <div class="col-xs-12" style="height:25px;"></div>            
+        </div>
+        <div class="row">
+             <div class="col-sm-offset-1 col-sm-10" style="margin-bottom:25px">
+                <h2>Dear parent</h2>
+                <p> DinoDent is a <b>cash</b> practice with credit card facilities and we <b>do not</b> 
+                    charge medical aid tariffs. Therefore, you first need to <b>settle</b>      
+                    the account <b>immediately after the appointment</b> and then claim
+                    from your medical aid. </p>
+                <p> It is important to <b>send the quotation to your medical aid</b> to confirm how
+                    much they will pay and what portion they will not cover.
+                    Please remember that you are <b>liable for the full amount</b>. </p>
+                <p> A <b>50% deposit</b> needs to be settled before your child receives treatment under
+                    <b>general anesthesia of sedation</b>. The rest of the account is due 30 days after
+                    treatment. These patients need to come for <b>two weeks (free)</b> and <b>three month </b>follow-up
+                    appointments. </p> 
+                <p> If your child receives <b> three or more fillings</b> then he/she is considered <i> high 
+                    risk to develop dental caries</i> and needs to come for four consecutive <b>three month</b>
+                    follow-up appointments. After the one year period, if no fillings had to be replaced or new 
+                    cavities have developed, then we can assess him/her to come six monthly instead of three monthly. </p>
+                <p> All other patients should come visits every <b>six months</b>. </p>
+                <p> If a filling falls out, please contact us to replace it. I provide a <b>six month</b> guarantee
+                    on restorations done. However, you lose this guarantee if you miss your prescribed dental visits.
+                    I will not be liable for future dental treatment after this period has passed, however I will
+                    gladly provide the necessary treatment (at normal rates).</p> </div>
+        </div>
+        <div class="row">  
+            <div class="col-sm-offset-1 col-sm-10">           
+                <form class="form-horizontal" name="form" action="/api/render-pdf">
+                <input type="hidden" name="_referrer" id="referrer" value="" />
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="date">Date:</label>
+                        <div class="col-sm-10">
+                            <p type="text" class="form-control-static" id="date"></p>
+                        </div>
+                    </div>      
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="name">Name (parent / legal guardian):</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" name="Name" placeholder="Enter name">
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="control-label col-sm-2">Signature:</label>
+                        <div class="col-sm-10"  id="signature"></div>
+                        <input type="hidden" name="_sigval" id="sigval" value="" />
+                    </div>                     
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <span class="pull-left">
+                            <button type="button" class="btn btn-default" onclick='$("#signature").jSignature("reset")'>Reset</button>
+                        </span>
+                        <span class="pull-right">
+                            <button type="button" class="btn btn-default" onclick="submitForm()">Submit</button>
+                        </span>
+                    </div>                    
+                </form>       
+            </div>  
+        </div>
+        <div class="col-xs-12" style="height:25px;"></div>                    
+    </div> 
+
+    <script>
+    var d = new Date();
+    document.getElementById("date").innerHTML = d.toDateString();
+
+    function submitForm() {
+        document.getElementById("sigval").value = $("#signature").jSignature("getData","svg")[1]
+        document.getElementById("referrer").value = window.location.pathname
+        document.forms["form"].submit();
+    }
+    </script>
+    
+	
+	<script>
+	    $(document).ready(function() {
+	        $("#signature").jSignature()
+	    })
+	</script>
+
+</body>
+
+</html>
