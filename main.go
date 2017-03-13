@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
-	"strings"
-
 	"github.com/jung-kurt/gofpdf"
+	"google.golang.org/appengine"
 )
 
 const assetDir = "assets/"
@@ -17,7 +17,9 @@ func main() {
 	http.Handle("/", fs)
 	http.HandleFunc("/api/render-pdf", renderPdf)
 
-	http.ListenAndServe(":8080", nil)
+	appengine.Main()
+
+	//http.ListenAndServe(":8080", nil)
 }
 
 func renderPdf(w http.ResponseWriter, r *http.Request) {
@@ -40,6 +42,7 @@ func renderPdf(w http.ResponseWriter, r *http.Request) {
 	printDate(pdf)
 	printForm(content, r, pdf)
 	printSignature(r, pdf)
+	w.Header().Set("Content-Type", "application/pdf")
 	err = pdf.Output(w)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("could not create pdf: %v", err), http.StatusInternalServerError)
